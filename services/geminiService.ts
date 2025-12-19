@@ -11,13 +11,13 @@ export const refineTranscript = async (rawText: string): Promise<string> => {
   }
 
   const ai = new GoogleGenAI({ apiKey });
-  
+
   try {
-    const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
-      contents: rawText,
-      config: {
-        systemInstruction: SYSTEM_PROMPT,
+    const model = ai.models.get('gemini-1.5-flash');
+    const response = await model.generateContent({
+      contents: [{ role: 'user', parts: [{ text: rawText }] }],
+      systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+      generationConfig: {
         temperature: 0.7,
         topP: 0.95,
       },
