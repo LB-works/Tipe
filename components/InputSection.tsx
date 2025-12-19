@@ -33,7 +33,7 @@ const InputSection: React.FC<InputSectionProps> = ({
             <span className="w-2 h-2 rounded-full bg-slate-300"></span>
             Raw Thought or Transcript
           </label>
-          <button 
+          <button
             onClick={onClear}
             className="text-xs text-slate-400 hover:text-red-500 flex items-center gap-1 transition-colors"
           >
@@ -49,7 +49,7 @@ const InputSection: React.FC<InputSectionProps> = ({
           className="w-full h-40 bg-transparent border-none resize-none focus:outline-none text-slate-800 text-lg leading-relaxed placeholder:text-slate-300"
           disabled={isProcessing}
         />
-        
+
         {isListening && (
           <div className="absolute inset-0 bg-indigo-50/50 backdrop-blur-[2px] rounded-3xl p-6 flex flex-col items-center justify-center text-center pointer-events-none">
             <div className="bg-indigo-600 p-4 rounded-full text-white mb-4 shadow-xl shadow-indigo-200 animate-pulse">
@@ -62,23 +62,23 @@ const InputSection: React.FC<InputSectionProps> = ({
           </div>
         )}
 
-        <div className="flex items-center justify-between pt-4 border-t border-slate-100">
-          <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-4 border-t border-slate-100">
+          <div className="flex gap-2 flex-1">
             {!isListening ? (
               <button
                 onClick={onStartRecord}
-                className="flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 px-5 py-2.5 rounded-2xl font-semibold transition-all group"
+                className="flex items-center justify-center gap-2 bg-slate-100 active:bg-slate-200 text-slate-700 px-6 py-3.5 rounded-2xl font-semibold transition-all group flex-1 sm:flex-initial min-h-[48px] touch-manipulation"
               >
-                <Mic size={18} className="group-hover:scale-110 transition-transform" />
-                <span>Dictate</span>
+                <Mic size={20} className="group-hover:scale-110 transition-transform" />
+                <span className="text-base">Dictate</span>
               </button>
             ) : (
               <button
                 onClick={onStopRecord}
-                className="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-5 py-2.5 rounded-2xl font-semibold transition-all animate-recording pointer-events-auto"
+                className="flex items-center justify-center gap-2 bg-red-500 active:bg-red-600 text-white px-6 py-3.5 rounded-2xl font-semibold transition-all animate-recording pointer-events-auto flex-1 sm:flex-initial min-h-[48px] touch-manipulation"
               >
-                <Square size={18} />
-                <span>Stop</span>
+                <Square size={20} />
+                <span className="text-base">Stop</span>
               </button>
             )}
           </div>
@@ -86,18 +86,17 @@ const InputSection: React.FC<InputSectionProps> = ({
           <button
             onClick={onSubmit}
             disabled={!value.trim() || isProcessing}
-            className={`flex items-center gap-2 px-6 py-2.5 rounded-2xl font-bold transition-all shadow-lg ${
-              !value.trim() || isProcessing
+            className={`flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl font-bold transition-all shadow-lg min-h-[48px] touch-manipulation ${!value.trim() || isProcessing
                 ? 'bg-slate-200 text-slate-400 shadow-none'
-                : 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-200 hover:-translate-y-0.5'
-            }`}
+                : 'bg-indigo-600 active:bg-indigo-700 text-white shadow-indigo-200'
+              }`}
           >
             {isProcessing ? (
               <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
             ) : (
-              <Send size={18} />
+              <Send size={20} />
             )}
-            <span>Refine Thought</span>
+            <span className="text-base">Refine Thought</span>
           </button>
         </div>
       </div>
