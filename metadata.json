@@ -1,0 +1,7 @@
+{
+  "name": "Tipe",
+  "description": "An intent-aware speech-to-text refinement engine that transforms messy spoken thoughts into clear, professional, human-quality writing.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
