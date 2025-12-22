@@ -25,17 +25,20 @@ export const useSpeechRecognition = () => {
         recognition.lang = 'en-US';
 
         recognition.onresult = (event: any) => {
-          let final = '';
-          let interim = '';
-          for (let i = event.resultIndex; i < event.results.length; ++i) {
+          let finalTranscript = '';
+          let interimTranscript = '';
+
+          // Collect ALL final results from the start
+          for (let i = 0; i < event.results.length; ++i) {
             if (event.results[i].isFinal) {
-              final += event.results[i][0].transcript;
+              finalTranscript += event.results[i][0].transcript + ' ';
             } else {
-              interim += event.results[i][0].transcript;
+              interimTranscript += event.results[i][0].transcript;
             }
           }
-          setTranscript(prev => prev + final);
-          setInterimTranscript(interim);
+
+          setTranscript(finalTranscript.trim());
+          setInterimTranscript(interimTranscript);
         };
 
         recognition.onerror = (event: any) => {
@@ -85,10 +88,10 @@ export const useSpeechRecognition = () => {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       // Release microphone immediately after permission check
       stream.getTracks().forEach(track => track.stop());
-      
+
       setTranscript('');
       setInterimTranscript('');
-      
+
       // Step 2: Start the high-level recognition engine
       setTimeout(() => {
         try {
@@ -103,10 +106,10 @@ export const useSpeechRecognition = () => {
           }
         }
       }, 150);
-      
+
     } catch (err: any) {
       console.error('Mic Access error caught:', err.name, err.message);
-      
+
       if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError' || err.message?.toLowerCase().includes('denied')) {
         setError('Microphone permission denied. To fix: click the lock icon in your address bar and change Microphone to "Allow".');
       } else if (err.name === 'NotFoundError') {

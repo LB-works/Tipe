@@ -1,5 +1,5 @@
 
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { SYSTEM_PROMPT } from "../constants.tsx";
 
 export const refineTranscript = async (rawText: string): Promise<string> => {
@@ -10,20 +10,19 @@ export const refineTranscript = async (rawText: string): Promise<string> => {
     throw new Error("API Key not found. Please ensure the environment is configured correctly.");
   }
 
-  const ai = new GoogleGenAI({ apiKey });
+  const genAI = new GoogleGenerativeAI(apiKey);
 
   try {
-    const model = ai.models.get('gemini-1.5-flash');
-    const response = await model.generateContent({
-      contents: [{ role: 'user', parts: [{ text: rawText }] }],
-      systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
-      generationConfig: {
-        temperature: 0.7,
-        topP: 0.95,
-      },
+    const model = genAI.getGenerativeModel({
+      model: "gemini-1.5-flash",
+      systemInstruction: SYSTEM_PROMPT,
     });
 
-    return response.text?.trim() || "Could not refine the text. Please try again.";
+    const result = await model.generateContent(rawText);
+    const response = result.response;
+    const text = response.text();
+
+    return text?.trim() || "Could not refine the text. Please try again.";
   } catch (error: any) {
     console.error("Gemini API Error:", error);
     throw new Error("Failed to refine the transcript. " + (error.message || "Please check your connection."));
