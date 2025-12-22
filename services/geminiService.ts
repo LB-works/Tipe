@@ -13,18 +13,28 @@ export const refineTranscript = async (rawText: string): Promise<string> => {
   const genAI = new GoogleGenerativeAI(apiKey);
 
   try {
+    const modelName = "gemini-1.5-flash";
     const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash",
+      model: modelName,
       systemInstruction: SYSTEM_PROMPT,
     });
 
     const result = await model.generateContent(rawText);
     const response = result.response;
-    const text = response.text();
-
-    return text?.trim() || "Could not refine the text. Please try again.";
+    return response.text()?.trim() || "Could not refine the text.";
   } catch (error: any) {
-    console.error("Gemini API Error:", error);
-    throw new Error("Failed to refine the transcript. " + (error.message || "Please check your connection."));
+    if (error.message?.includes("404") || error.message?.includes("not found")) {
+      console.warn("Gemini 1.5 Flash failed, falling back to Gemini Pro");
+      try {
+        const fallbackModel = genAI.getGenerativeModel({ model: "gemini-pro" });
+        // gemini-pro doesn't support systemInstruction in the same way sometimes, so we include it in prompt
+        const fallbackPrompt = `${SYSTEM_PROMPT}\n\nUser Input:\n${rawText}`;
+        const result = await fallbackModel.generateContent(fallbackPrompt);
+        return result.response.text()?.trim() || "Could not refine text (fallback).";
+      } catch (fallbackError: any) {
+        throw new Error("Both Gemini Flash and Pro failed. " + fallbackError.message);
+      }
+    }
+    throw new Error("Failed to refine: " + error.message);
   }
 };

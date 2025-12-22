@@ -14,31 +14,53 @@ export const useSpeechRecognition = () => {
   const [interimTranscript, setInterimTranscript] = useState('');
   const [error, setError] = useState<string | null>(null);
   const recognitionRef = useRef<any>(null);
+  const isListeningRef = useRef(isListening); // Ref to hold the latest isListening state
+
+  // Update the ref whenever isListening changes
+  useEffect(() => {
+    isListeningRef.current = isListening;
+  }, [isListening]);
 
   useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (SpeechRecognition) {
       try {
         const recognition = new SpeechRecognition();
-        recognition.continuous = true;
+        // Fix for Android duplication: Disable native continuous and manually restart
+        recognition.continuous = false;
         recognition.interimResults = true;
         recognition.lang = 'en-US';
 
         recognition.onresult = (event: any) => {
-          const results = Array.from(event.results) as any[];
+          let interim = '';
+          let final = '';
 
-          const finalTranscript = results
-            .filter(r => r.isFinal)
-            .map(r => r[0].transcript)
-            .join(' ');
+          for (let i = 0; i < event.results.length; ++i) {
+            if (event.results[i].isFinal) {
+              final += event.results[i][0].transcript;
+            } else {
+              interim += event.results[i][0].transcript;
+            }
+          }
 
-          const interimTranscript = results
-            .filter(r => !r.isFinal)
-            .map(r => r[0].transcript)
-            .join('');
+          if (final) {
+            setTranscript(prev => (prev + ' ' + final).trim());
+          }
+          setInterimTranscript(interim);
+        };
 
-          setTranscript(finalTranscript.trim());
-          setInterimTranscript(interimTranscript);
+        recognition.onend = () => {
+          // Use the ref to get the latest isListening state
+          if (isListeningRef.current) {
+            try {
+              recognition.start();
+            } catch (e) {
+              // Ignore errors on restart, user might have stopped manually
+            }
+          } else {
+            // If not listening, ensure state is updated
+            setIsListening(false);
+          }
         };
 
         recognition.onerror = (event: any) => {
@@ -55,9 +77,7 @@ export const useSpeechRecognition = () => {
           setIsListening(false);
         };
 
-        recognition.onend = () => {
-          setIsListening(false);
-        };
+
 
         recognitionRef.current = recognition;
       } catch (e) {

@@ -151,7 +151,7 @@ const App: React.FC = () => {
       </main>
 
       <footer className="mt-20 py-8 text-center text-slate-400 text-sm border-t border-slate-100">
-        <p>© 2024 ThoughtRefine AI • Professional Thought Polishing • v2.2</p>
+        <p>© 2024 ThoughtRefine AI • Professional Thought Polishing • v2.3</p>
       </footer>
     </div>
   );
