@@ -13,12 +13,12 @@ const App: React.FC = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
 
-  const { 
-    isListening, 
-    transcript, 
-    interimTranscript, 
+  const {
+    isListening,
+    transcript,
+    interimTranscript,
     error: speechError,
-    startListening, 
+    startListening,
     stopListening,
     setTranscript,
     setError: setSpeechError
@@ -63,8 +63,8 @@ const App: React.FC = () => {
     startListening();
   }, [startListening, setSpeechError]);
 
-  const isPermissionError = 
-    speechError?.toLowerCase().includes('denied') || 
+  const isPermissionError =
+    speechError?.toLowerCase().includes('denied') ||
     speechError?.toLowerCase().includes('permission') ||
     speechError?.toLowerCase().includes('blocked') ||
     speechError?.toLowerCase().includes('not-allowed');
@@ -72,7 +72,7 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen pb-20 bg-gradient-to-b from-slate-50 to-white selection:bg-indigo-100 selection:text-indigo-900">
       <Header />
-      
+
       <main>
         <div className="max-w-4xl mx-auto px-4 mb-8">
           <div className="bg-indigo-600/5 border border-indigo-100 rounded-2xl p-4 sm:p-6 text-indigo-900 mb-8 shadow-sm">
@@ -80,13 +80,13 @@ const App: React.FC = () => {
               Transform Spoken Chaos into Clear Text
             </h3>
             <p className="text-indigo-700/80 leading-relaxed text-sm">
-              Our engine understands the <em>intent</em> behind your messy speech. Simply dictate or paste your raw thoughts, 
+              Our engine understands the <em>intent</em> behind your messy speech. Simply dictate or paste your raw thoughts,
               and we'll strip away the filler words, fix the structure, and deliver polished writing.
             </p>
           </div>
         </div>
 
-        <InputSection 
+        <InputSection
           value={rawText}
           onChange={setRawText}
           isListening={isListening}
@@ -100,16 +100,15 @@ const App: React.FC = () => {
 
         {displayError && (
           <div className="max-w-4xl mx-auto px-4 mt-6">
-            <div className={`border rounded-2xl px-6 py-5 shadow-md flex flex-col gap-3 transition-all animate-in fade-in slide-in-from-top-2 ${
-              isPermissionError 
-                ? 'bg-amber-50 border-amber-200 text-amber-900' 
+            <div className={`border rounded-2xl px-6 py-5 shadow-md flex flex-col gap-3 transition-all animate-in fade-in slide-in-from-top-2 ${isPermissionError
+                ? 'bg-amber-50 border-amber-200 text-amber-900'
                 : 'bg-red-50 border-red-200 text-red-900'
-            }`}>
+              }`}>
               <div className="flex items-center gap-3 font-bold">
                 {isPermissionError ? <MicOff className="text-amber-600" size={22} /> : <AlertCircle className="text-red-600" size={22} />}
                 <span className="text-lg">{isPermissionError ? 'Microphone Access Issue' : 'Attention'}</span>
               </div>
-              
+
               <p className="text-sm leading-relaxed font-medium opacity-90">
                 {displayError}
               </p>
@@ -127,7 +126,7 @@ const App: React.FC = () => {
                       <li>Click <strong>"Try Mic Again"</strong> below.</li>
                     </ol>
                   </div>
-                  <button 
+                  <button
                     onClick={handleRetryMic}
                     className="flex items-center justify-center gap-2 w-full sm:w-fit bg-amber-600 hover:bg-amber-700 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg shadow-amber-200 active:scale-95"
                   >
@@ -136,7 +135,7 @@ const App: React.FC = () => {
                   </button>
                 </div>
               ) : (
-                <button 
+                <button
                   onClick={() => { setApiError(null); setSpeechError(null); }}
                   className="flex items-center justify-center gap-2 w-full sm:w-fit bg-slate-800 hover:bg-slate-900 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg active:scale-95 mt-2"
                 >
@@ -152,7 +151,7 @@ const App: React.FC = () => {
       </main>
 
       <footer className="mt-20 py-8 text-center text-slate-400 text-sm border-t border-slate-100">
-        <p>© 2024 ThoughtRefine AI • Professional Thought Polishing</p>
+        <p>© 2024 ThoughtRefine AI • Professional Thought Polishing • v2.1</p>
       </footer>
     </div>
   );
