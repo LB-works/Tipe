@@ -25,17 +25,17 @@ export const useSpeechRecognition = () => {
         recognition.lang = 'en-US';
 
         recognition.onresult = (event: any) => {
-          let finalTranscript = '';
-          let interimTranscript = '';
+          const results = Array.from(event.results) as any[];
 
-          // Collect ALL final results from the start
-          for (let i = 0; i < event.results.length; ++i) {
-            if (event.results[i].isFinal) {
-              finalTranscript += event.results[i][0].transcript + ' ';
-            } else {
-              interimTranscript += event.results[i][0].transcript;
-            }
-          }
+          const finalTranscript = results
+            .filter(r => r.isFinal)
+            .map(r => r[0].transcript)
+            .join(' ');
+
+          const interimTranscript = results
+            .filter(r => !r.isFinal)
+            .map(r => r[0].transcript)
+            .join('');
 
           setTranscript(finalTranscript.trim());
           setInterimTranscript(interimTranscript);

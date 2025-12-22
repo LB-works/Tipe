@@ -101,8 +101,8 @@ const App: React.FC = () => {
         {displayError && (
           <div className="max-w-4xl mx-auto px-4 mt-6">
             <div className={`border rounded-2xl px-6 py-5 shadow-md flex flex-col gap-3 transition-all animate-in fade-in slide-in-from-top-2 ${isPermissionError
-                ? 'bg-amber-50 border-amber-200 text-amber-900'
-                : 'bg-red-50 border-red-200 text-red-900'
+              ? 'bg-amber-50 border-amber-200 text-amber-900'
+              : 'bg-red-50 border-red-200 text-red-900'
               }`}>
               <div className="flex items-center gap-3 font-bold">
                 {isPermissionError ? <MicOff className="text-amber-600" size={22} /> : <AlertCircle className="text-red-600" size={22} />}
@@ -151,7 +151,7 @@ const App: React.FC = () => {
       </main>
 
       <footer className="mt-20 py-8 text-center text-slate-400 text-sm border-t border-slate-100">
-        <p>© 2024 ThoughtRefine AI • Professional Thought Polishing • v2.1</p>
+        <p>© 2024 ThoughtRefine AI • Professional Thought Polishing • v2.2</p>
       </footer>
     </div>
   );
