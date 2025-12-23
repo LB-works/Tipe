@@ -153,7 +153,3 @@ const App: React.FC = () => {
         <p>© 2024 ThoughtRefine AI • Professional Thought Polishing • v2.5</p>
       </footer>
     </div>
-            );
-};
-
-            export default App;
