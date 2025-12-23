@@ -156,7 +156,6 @@ const App: React.FC = () => {
                     className="text-xs text-slate-400 underline mt-2 hover:text-slate-600"
                   >
                     Debug API Key
-                  </button>
                 </div>
               )}
             </div>

@@ -37,8 +37,6 @@ export const refineTranscript = async (rawText: string): Promise<string> => {
     }
     throw new Error("Failed to refine: " + error.message);
   }
-  throw new Error("Failed to refine: " + error.message);
-}
 };
 
 export const checkApiAvailability = async (): Promise<string> => {
