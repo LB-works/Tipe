@@ -157,6 +157,7 @@ const App: React.FC = () => {
                   >
                     Debug API Key
                   </button>
+                </div>
               )}
             </div>
           </div>
