@@ -135,13 +135,29 @@ const App: React.FC = () => {
                   </button>
                 </div>
               ) : (
-                <button
-                  onClick={() => { setApiError(null); setSpeechError(null); }}
-                  className="flex items-center justify-center gap-2 w-full sm:w-fit bg-slate-800 hover:bg-slate-900 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg active:scale-95 mt-2"
-                >
-                  <RotateCcw size={16} />
-                  Dismiss & Reset
-                </button>
+                <div className="flex flex-col sm:flex-row items-center gap-4">
+                  <button
+                    onClick={() => { setApiError(null); setSpeechError(null); }}
+                    className="flex items-center justify-center gap-2 w-full sm:w-fit bg-slate-800 hover:bg-slate-900 text-white px-6 py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg active:scale-95 mt-2"
+                  >
+                    <RotateCcw size={16} />
+                    Dismiss & Reset
+                  </button>
+
+                  <button
+                    onClick={async () => {
+                      try {
+                        const status = await import('./services/geminiService.ts').then(m => m.checkApiAvailability());
+                        alert(status);
+                      } catch (e) {
+                        alert("Debug failed");
+                      }
+                    }}
+                    className="text-xs text-slate-400 underline mt-2 hover:text-slate-600"
+                  >
+                    Debug API Key
+                  </button>
+                </div>
               )}
             </div>
           </div>
@@ -151,7 +167,7 @@ const App: React.FC = () => {
       </main>
 
       <footer className="mt-20 py-8 text-center text-slate-400 text-sm border-t border-slate-100">
-        <p>© 2024 ThoughtRefine AI • Professional Thought Polishing • v2.3</p>
+        <p>© 2024 ThoughtRefine AI • Professional Thought Polishing • v2.4</p>
       </footer>
     </div>
   );

@@ -37,4 +37,23 @@ export const refineTranscript = async (rawText: string): Promise<string> => {
     }
     throw new Error("Failed to refine: " + error.message);
   }
+  throw new Error("Failed to refine: " + error.message);
+}
+};
+
+export const checkApiAvailability = async (): Promise<string> => {
+  const apiKey = process.env.API_KEY;
+  if (!apiKey) return "No API Key found.";
+
+  try {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+    if (!response.ok) {
+      return `API Error: ${response.status} ${response.statusText}`;
+    }
+    const data = await response.json();
+    const models = data.models?.map((m: any) => m.name.replace('models/', '')) || [];
+    return `Available Models: ${models.join(', ')}`;
+  } catch (e: any) {
+    return `Connection Failed: ${e.message}`;
+  }
 };
