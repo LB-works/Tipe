@@ -153,7 +153,18 @@ const App: React.FC = () => {
       </main>
 
       <footer className="mt-20 py-8 text-center text-slate-400 text-sm border-t border-slate-100">
-        <p>© 2024 ThoughtRefine AI • Professional Thought Polishing • v2.5</p>
+        <p>© 2024 ThoughtRefine AI • Professional Thought Polishing • v3.0</p>
+        <button
+          onClick={() => {
+            // @ts-ignore
+            const viteKey = !!import.meta.env.VITE_API_KEY;
+            const procKey = !!process.env.API_KEY;
+            alert(`Diagnostic v3.0:\nVITE_API_KEY Present: ${viteKey}\nprocess.env.API_KEY Present: ${procKey}`);
+          }}
+          className="text-[10px] text-slate-300 mt-2 underline opacity-50 hover:opacity-100"
+        >
+          Check Config
+        </button>
       </footer>
     </div>
   );
