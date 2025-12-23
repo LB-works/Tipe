@@ -13,7 +13,7 @@ export const refineTranscript = async (rawText: string): Promise<string> => {
   const genAI = new GoogleGenerativeAI(apiKey);
 
   try {
-    const modelName = "gemini-1.5-flash";
+    const modelName = "gemini-2.0-flash";
     const model = genAI.getGenerativeModel({
       model: modelName,
       systemInstruction: SYSTEM_PROMPT,
@@ -24,15 +24,14 @@ export const refineTranscript = async (rawText: string): Promise<string> => {
     return response.text()?.trim() || "Could not refine the text.";
   } catch (error: any) {
     if (error.message?.includes("404") || error.message?.includes("not found")) {
-      console.warn("Gemini 1.5 Flash failed, falling back to Gemini Pro");
+      console.warn("Gemini 2.0 Flash failed, falling back to Lite");
       try {
-        const fallbackModel = genAI.getGenerativeModel({ model: "gemini-pro" });
-        // gemini-pro doesn't support systemInstruction in the same way sometimes, so we include it in prompt
+        const fallbackModel = genAI.getGenerativeModel({ model: "gemini-2.0-flash-lite" });
         const fallbackPrompt = `${SYSTEM_PROMPT}\n\nUser Input:\n${rawText}`;
         const result = await fallbackModel.generateContent(fallbackPrompt);
         return result.response.text()?.trim() || "Could not refine text (fallback).";
       } catch (fallbackError: any) {
-        throw new Error("Both Gemini Flash and Pro failed. " + fallbackError.message);
+        throw new Error("Model access failed. " + fallbackError.message);
       }
     }
     throw new Error("Failed to refine: " + error.message);

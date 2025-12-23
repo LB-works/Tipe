@@ -144,33 +144,16 @@ const App: React.FC = () => {
                     Dismiss & Reset
                   </button>
 
-                  <button
-                    onClick={async () => {
-                      try {
-                        const status = await import('./services/geminiService.ts').then(m => m.checkApiAvailability());
-                        alert(status);
-                      } catch (e) {
-                        alert("Debug failed");
-                      }
-                    }}
-                    className="text-xs text-slate-400 underline mt-2 hover:text-slate-600"
-                  >
-                    Debug API Key
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
         )}
 
         <OutputSection refined={refinedText} />
       </main>
 
       <footer className="mt-20 py-8 text-center text-slate-400 text-sm border-t border-slate-100">
-        <p>© 2024 ThoughtRefine AI • Professional Thought Polishing • v2.4</p>
+        <p>© 2024 ThoughtRefine AI • Professional Thought Polishing • v2.5</p>
       </footer>
     </div>
-  );
+            );
 };
 
-export default App;
+            export default App;
