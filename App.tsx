@@ -143,7 +143,10 @@ const App: React.FC = () => {
                     <RotateCcw size={16} />
                     Dismiss & Reset
                   </button>
-
+                </div>
+              )}
+            </div>
+          </div>
         )}
 
         <OutputSection refined={refinedText} />
@@ -153,7 +156,7 @@ const App: React.FC = () => {
         <p>© 2024 ThoughtRefine AI • Professional Thought Polishing • v2.5</p>
       </footer>
     </div>
-            );
+  );
 };
 
-            export default App;
+export default App;
