@@ -5,7 +5,8 @@ import { SYSTEM_PROMPT } from "../constants.tsx";
 export const refineTranscript = async (rawText: string): Promise<string> => {
   if (!rawText.trim()) return "";
 
-  const apiKey = process.env.API_KEY;
+  // @ts-ignore
+  const apiKey = import.meta.env.VITE_API_KEY || process.env.API_KEY;
   if (!apiKey) {
     throw new Error("API Key not found. Please ensure the environment is configured correctly.");
   }
@@ -39,7 +40,8 @@ export const refineTranscript = async (rawText: string): Promise<string> => {
 };
 
 export const checkApiAvailability = async (): Promise<string> => {
-  const apiKey = process.env.API_KEY;
+  // @ts-ignore
+  const apiKey = import.meta.env.VITE_API_KEY || process.env.API_KEY;
   if (!apiKey) return "No API Key found.";
 
   try {
